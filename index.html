@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>For Sarauniya — The Universe Knew</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020108;color:#fff;font-family:Georgia,"Times New Roman",serif}body{touch-action:none}
+canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+#nebula{position:fixed;inset:-30%;z-index:1;pointer-events:none;background:radial-gradient(circle at 30% 30%,rgba(131,35,255,.18),transparent 24%),radial-gradient(circle at 72% 62%,rgba(255,35,151,.15),transparent 25%),radial-gradient(circle at 48% 80%,rgba(40,100,255,.1),transparent 22%);filter:blur(30px);animation:neb 16s ease-in-out infinite alternate}
+@keyframes neb{to{transform:scale(1.12) rotate(8deg)}}
+#vignette{position:fixed;inset:0;z-index:3;pointer-events:none;background:radial-gradient(circle,transparent 35%,rgba(0,0,0,.65) 100%)}
+#intro{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#020108;transition:opacity 1.8s,visibility 1.8s}.introBox{text-align:center;padding:30px;animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-9px)}}.mini{font:10px Arial,sans-serif;letter-spacing:5px;text-transform:uppercase;color:#ff9bd0}
+.introBox h1{font-weight:400;font-size:clamp(43px,12vw,82px);line-height:.9;margin:20px 0;text-shadow:0 0 45px rgba(255,75,181,.45)}.introBox p{color:#dcb9cf;font-size:16px;line-height:1.7;max-width:420px}
+#enter{margin-top:22px;border:1px solid rgba(255,154,214,.45);background:rgba(255,255,255,.04);color:white;border-radius:100px;padding:16px 28px;letter-spacing:4px;text-transform:uppercase;font-size:10px;box-shadow:0 0 45px rgba(255,40,160,.15)}
+#ui{position:fixed;inset:0;z-index:10;pointer-events:none}.scene{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:30px;opacity:0;transform:scale(.88) translateY(20px);transition:opacity 1.2s ease,transform 1.6s cubic-bezier(.2,.8,.2,1)}.scene.on{opacity:1;transform:scale(1) translateY(0)}
+.content{max-width:700px}.kicker{font:9px Arial,sans-serif;letter-spacing:6px;text-transform:uppercase;color:#ff9dce;margin-bottom:18px}
+h2{font-size:clamp(38px,11vw,82px);font-weight:400;line-height:.92;margin:0;text-shadow:0 0 45px rgba(255,50,170,.32)}.scene p{font-size:clamp(16px,4.5vw,23px);line-height:1.7;color:#efd8e5;margin:22px auto;max-width:610px}
+#hint{position:absolute;bottom:27px;left:50%;transform:translateX(-50%);font:9px Arial,sans-serif;letter-spacing:3px;text-transform:uppercase;color:#d6a6c2;white-space:nowrap;opacity:.7}
+#time{position:absolute;top:24px;right:24px;font:10px Arial,sans-serif;letter-spacing:3px;color:#f6b8d7;opacity:.7}
+#moon{position:absolute;width:22vw;height:22vw;max-width:170px;max-height:170px;min-width:85px;min-height:85px;border-radius:50%;left:13%;top:18%;background:radial-gradient(circle at 35% 30%,#fff,#e9cce1 35%,#9d77a7 70%,#392647);box-shadow:0 0 45px rgba(229,180,255,.35);opacity:0;transform:scale(.5);transition:1.8s}
+#moon:after{content:"";position:absolute;inset:7%;border-radius:50%;background:radial-gradient(circle at 65% 30%,transparent 0 8%,rgba(80,50,90,.2) 9% 12%,transparent 13%),radial-gradient(circle at 30% 65%,rgba(80,50,90,.22) 0 10%,transparent 11%)}
+#planet{position:absolute;width:170px;height:170px;right:8%;bottom:17%;border-radius:50%;opacity:0;transform:scale(.4);transition:1.8s;background:radial-gradient(circle at 30% 25%,#ffd1ed,#b4479d 42%,#3b1654 75%);box-shadow:inset -25px -20px 40px #12091d,0 0 60px rgba(255,71,188,.22)}
+#planet:before{content:"";position:absolute;width:270px;height:65px;border:2px solid rgba(255,166,224,.55);border-radius:50%;left:-50px;top:50px;transform:rotate(-18deg);box-shadow:0 0 18px rgba(255,120,220,.3)}
+#letter{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 1.8s}
+.paper{width:min(92vw,700px);max-height:88vh;overflow:auto;padding:38px 28px 45px;border-radius:30px;background:linear-gradient(145deg,#fff7fb,#f6d9e9);color:#422337;box-shadow:0 0 100px rgba(255,50,175,.28),0 30px 100px #000}.paper h3{font-size:32px;color:#a32e70;font-weight:400;margin:0 0 22px}.paper p{font-size:16px;line-height:1.85;margin:15px 0}.sign{font-family:cursive;font-size:29px;color:#a32e70;margin-top:25px}
+#blackout{position:fixed;inset:0;background:#000;z-index:40;opacity:0;pointer-events:none;transition:opacity 1.4s}
+</style>
+</head>
+<body>
+<canvas id="space"></canvas><div id="nebula"></div><div id="vignette"></div><div id="moon"></div><div id="planet"></div>
+
+<div id="intro"><div class="introBox"><div class="mini">A little universe</div><h1>For<br>Sarauniya ♡</h1><p>Tonight, don't just read this.<br>Watch the universe change for you.</p><button id="enter">Enter the universe ✦</button></div></div>
+
+<div id="ui"><div id="time"></div>
+<section class="scene" id="s0"><div class="content"><div class="kicker">look up</div><h2>Before there was a heart...</h2><p>there was only darkness, distance, and millions of little lights.</p></div></section>
+<section class="scene" id="s1"><div class="content"><div class="kicker">then one light moved</div><h2>One star<br>noticed you.</h2><p>And somehow, every other star followed.</p></div></section>
+<section class="scene" id="s2"><div class="content"><div class="kicker">watch them</div><h2>They're becoming<br>something.</h2><p>Touch the sky. Move your finger through them.</p></div></section>
+<section class="scene" id="s3"><div class="content"><div class="kicker">there it is</div><h2>A heart.</h2><p>Not drawn. Not placed here.<br>Built from stars.</p></div></section>
+<section class="scene" id="s4"><div class="content"><div class="kicker">but the universe wasn't finished</div><h2>The heart<br>became a star.</h2><p>Because ordinary hearts aren't enough for an extraordinary girl.</p></div></section>
+<section class="scene" id="s5"><div class="content"><div class="kicker">and around it</div><h2>Whole worlds<br>began to orbit.</h2><p>Just like everything in my heart somehow keeps finding its way back to you.</p></div></section>
+<section class="scene" id="s6"><div class="content"><div class="kicker">the moon knows</div><h2>Even in the dark,<br>you glow.</h2><p>And somehow, you make the dark feel less lonely.</p></div></section>
+<section class="scene" id="s7"><div class="content"><div class="kicker">if Allah wills</div><h2>May this keep<br>becoming.</h2><p>May Allah put mercy, patience, laughter, understanding and barakah in whatever He has written for us.</p></div></section>
+<section class="scene" id="s8"><div class="content"><div class="kicker">Muhammad → Sarauniya</div><h2>Of all the worlds...</h2><p>I would still choose the one where I get to know you.</p></div></section>
+<div id="hint">tap • hold • move your finger • watch the universe respond</div></div>
+
+<div id="blackout"></div>
+<div id="letter"><article class="paper"><h3>My Hayati,</h3>
+<p>I wanted to give you something that didn't feel like another ordinary message.</p>
+<p>So I gave you a sky.</p>
+<p>I gave you stars because some feelings are too large for a sentence. I gave you a moon because even darkness deserves something beautiful inside it. I gave you planets because there are countless worlds out there, yet somehow my heart keeps returning to one person.</p>
+<p>You.</p><p>I still love how unexpectedly our story began. Two course mates who didn't really know each other. A simple request for notes. A stolen bag. A conversation that could have ended as quickly as it started.</p>
+<p>But it became something I never expected.</p><p>And now, when I think about you, I don't think about something ordinary. I think about something that makes the whole universe feel a little more alive.</p>
+<p>Thank you for being real. Thank you for caring. Thank you for the little things you do that you may not even realize stay with me.</p>
+<p>If Allah wills that our story continues all the way to Nikkah, may He make what comes after this even more beautiful than what came before it.</p>
+<p>And if you ever forget how much space you occupy in my heart, come back to this little universe.</p>
+<p>Because I made every star search for a place to belong.</p><p>And every single one of them found you.</p>
+<div class="sign">— Muhammad ♡</div></article></div>
+
+<script>
+const canvas=document.getElementById("space"),ctx=canvas.getContext("2d");let W,H,DPR,stars=[],started=false,scene=-1,mode="space",timer=null;
+let pointer={x:-1000,y:-1000,down:false};
+function resize(){W=innerWidth;H=innerHeight;DPR=Math.min(devicePixelRatio||1,2);canvas.width=W*DPR;canvas.height=H*DPR;canvas.style.width=W+"px";canvas.style.height=H+"px";ctx.setTransform(DPR,0,0,DPR,0,0)}addEventListener("resize",resize);resize();
+function heartPoint(t,s){return{x:16*Math.sin(t)**3*s,y:-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t))*s}}
+function seed(){stars=[];let n=Math.min(1300,Math.max(650,Math.floor(W*H/600)));for(let i=0;i<n;i++){let a=Math.random()*Math.PI*2,r=Math.pow(Math.random(),.55)*Math.max(W,H)*.72;stars.push({x:W/2+Math.cos(a)*r,y:H/2+Math.sin(a)*r,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,size:.25+Math.random()*1.8,alpha:.2+Math.random()*.8,phase:Math.random()*6.28,hue:Math.random()<.7?320:265})}}seed();
+function heartTarget(i){let p=heartPoint(i/stars.length*Math.PI*2,.018*Math.min(W,H));return{x:W/2+p.x+(Math.random()-.5)*7,y:H/2+p.y+(Math.random()-.5)*7}}
+function starTarget(i){let t=i/stars.length*Math.PI*2,p=heartPoint(t,.019*Math.min(W,H)),r=Math.random()*9;return{x:W/2+p.x+Math.cos(t*17)*r,y:H/2+p.y+Math.sin(t*17)*r}}
+function galaxyTarget(i){let a=i/stars.length*Math.PI*12,r=i/stars.length*Math.min(W,H)*.44;return{x:W/2+Math.cos(a)*r,y:H/2+Math.sin(a)*r*.48}}
+function draw(time){ctx.clearRect(0,0,W,H);let cx=W/2,cy=H/2;stars.forEach((s,i)=>{let q;
+if(mode==="heart"){q=heartTarget(i);s.x+=(q.x-s.x)*.028;s.y+=(q.y-s.y)*.028}
+else if(mode==="giantstar"){q=starTarget(i);s.x+=(q.x-s.x)*.035;s.y+=(q.y-s.y)*.035}
+else if(mode==="galaxy"){q=galaxyTarget(i);s.x+=(q.x-s.x)*.018;s.y+=(q.y-s.y)*.018}
+else if(mode==="explode"){s.x+=(s.x-cx)*.018;s.y+=(s.y-cy)*.018}
+else{s.x+=s.vx;s.y+=s.vy;if(s.x<-40)s.x=W+40;if(s.x>W+40)s.x=-40;if(s.y<-40)s.y=H+40;if(s.y>H+40)s.y=-40}
+if(pointer.down){let dx=pointer.x-s.x,dy=pointer.y-s.y,d=Math.hypot(dx,dy);if(d<180){s.x+=dx*.012;s.y+=dy*.012}}
+let tw=(Math.sin(time*.002+s.phase)+1)/2,pulse=mode==="giantstar"?1+Math.sin(time*.004)*.2:1,size=s.size*(.6+tw*.8)*pulse;
+ctx.beginPath();ctx.fillStyle=`hsla(${s.hue},100%,${78+tw*18}%,${s.alpha})`;ctx.arc(s.x,s.y,size,0,Math.PI*2);ctx.fill();
+if(size>1.5){ctx.beginPath();ctx.fillStyle=`rgba(255,105,202,${.07+tw*.09})`;ctx.arc(s.x,s.y,size*5,0,Math.PI*2);ctx.fill()}});
+if(mode==="giantstar"){ctx.save();ctx.translate(cx,cy);let p=1+Math.sin(time*.004)*.035;ctx.scale(p,p);let r=Math.min(W,H)*.14;ctx.beginPath();for(let i=0;i<10;i++){let a=-Math.PI/2+i*Math.PI/5,rr=i%2?r*.42:r,xx=Math.cos(a)*rr,yy=Math.sin(a)*rr;i?ctx.lineTo(xx,yy):ctx.moveTo(xx,yy)}ctx.closePath();ctx.fillStyle="rgba(255,83,190,.12)";ctx.shadowBlur=60;ctx.shadowColor="#ff3cae";ctx.fill();ctx.strokeStyle="rgba(255,170,226,.55)";ctx.stroke();ctx.restore()}requestAnimationFrame(draw)}requestAnimationFrame(draw);
+function show(n){scene=n;document.querySelectorAll(".scene").forEach((e,i)=>e.classList.toggle("on",i===n));let moon=document.getElementById("moon"),planet=document.getElementById("planet");
+if(n===0){mode="space";moon.style.opacity=0;planet.style.opacity=0}
+if(n===1||n===2){mode="heart";moon.style.opacity=.4}
+if(n===3){mode="heart";moon.style.opacity=0;planet.style.opacity=0}
+if(n===4){mode="giantstar";moon.style.opacity=.25}
+if(n===5){mode="galaxy";planet.style.opacity=.8;planet.style.transform="scale(1)"}
+if(n===6){mode="space";moon.style.opacity=.95;moon.style.transform="scale(1)"}
+if(n===7){mode="heart";moon.style.opacity=.6;planet.style.opacity=.5}
+if(n===8){mode="giantstar";moon.style.opacity=.35;planet.style.opacity=.8}}
+function next(){if(!started)return;if(scene<8){show(scene+1);clearTimeout(timer);timer=setTimeout(next,scene===3||scene===4?4300:3600)}else{document.getElementById("ui").style.opacity=0;document.getElementById("hint").style.opacity=0;setTimeout(()=>{document.getElementById("blackout").style.opacity=1;setTimeout(()=>{document.getElementById("letter").style.opacity=1;document.getElementById("letter").style.pointerEvents="auto";document.getElementById("blackout").style.opacity=0},1100)},1200)}}
+document.getElementById("enter").onclick=()=>{started=true;document.getElementById("intro").style.opacity=0;document.getElementById("intro").style.visibility="hidden";show(0);timer=setTimeout(next,3600)};
+canvas.addEventListener("pointerdown",e=>{pointer.down=true;pointer.x=e.clientX;pointer.y=e.clientY;if(started&&scene<8){clearTimeout(timer);next()}});
+canvas.addEventListener("pointermove",e=>{pointer.x=e.clientX;pointer.y=e.clientY});canvas.addEventListener("pointerup",()=>pointer.down=false);canvas.addEventListener("pointercancel",()=>pointer.down=false);
+setInterval(()=>{let d=new Date();document.getElementById("time").textContent=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})},1000);
+</script>
+</body>
+</html>
